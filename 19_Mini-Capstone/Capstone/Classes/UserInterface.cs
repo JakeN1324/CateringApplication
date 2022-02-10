@@ -50,10 +50,12 @@ namespace Capstone.Classes
 
                 switch (input)
                 {
-                    
+                    case "1":
+                        AddMoney();
+                        break;
 
                 }
-            } 
+            }
 
             void MainMenu()
             {
@@ -85,9 +87,40 @@ namespace Capstone.Classes
                 Console.WriteLine("(2) Select Products");
                 Console.WriteLine("(3) Compplete Transaction");
                 Console.WriteLine("Current Account Balance: " + accountBalance);
-                
+
             }
 
+            decimal AddMoney()
+            {
+
+                
+                Console.WriteLine("Enter the amount to add in a whole dollar amount: ");
+                decimal moneyToAdd = decimal.Parse(Console.ReadLine());
+                if (moneyToAdd == 1 || moneyToAdd == 5 || moneyToAdd == 10 || moneyToAdd == 20 || moneyToAdd == 50 || moneyToAdd == 100)
+                {
+                    accountBalance += moneyToAdd;
+                    
+                    if (accountBalance <= 1500)
+                    {
+                        return accountBalance;
+                    }
+                    else
+                    {
+                        accountBalance -= moneyToAdd;
+                        Console.WriteLine("Balance cannot exceed $1500");
+                    }
+
+                }
+                else
+                {
+                    
+                    Console.WriteLine("Invalid Bill Amount");
+                    
+                }
+
+                return accountBalance;
+
+            }
         }
     }
 }

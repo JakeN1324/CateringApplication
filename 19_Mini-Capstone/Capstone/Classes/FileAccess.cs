@@ -32,7 +32,7 @@ namespace Capstone.Classes
             
             foreach(CateringItem item in cateringItems)
             {
-                item.Code = 
+                
             }
 
             foreach(string code in sortedItems)
