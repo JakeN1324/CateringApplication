@@ -18,11 +18,35 @@ namespace Capstone.Classes
 
         public void RunInterface()
         {
+             void MainMenu()
+            {
+                Console.WriteLine("(1) Display Menu Items");
+                Console.WriteLine("(2) Order");
+                Console.WriteLine( "(3) Quit");
+            }
+
+            
+
             bool done = false;
             while (!done)
             {
-                Console.WriteLine("This is the UserInterface");
-                Console.ReadLine();
+                MainMenu();
+                string Input = Console.ReadLine();
+
+                switch(Input)
+                {
+                    case "1":
+                        DisplayItems();
+
+
+                }
+                
+            }
+
+            void DisplayItems()
+            {
+                
+                foreach (CateringItem item in cateringItems)
             }
 
         }
