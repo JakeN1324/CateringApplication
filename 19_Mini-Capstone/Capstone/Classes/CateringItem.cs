@@ -18,8 +18,8 @@ namespace Capstone.Classes
         }
         public string Name { get; set; }
         public decimal Price { get; set; }
-        
-        public int Quantity { get; private set; }
+
+        public int Quantity { get; private set; } = 25;
         public string Code { get; set; }
 
         // This class should contain the definition for one catering item

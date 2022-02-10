@@ -23,6 +23,7 @@ namespace Capstone.Classes
                 Console.WriteLine("(1) Display Menu Items");
                 Console.WriteLine("(2) Order");
                 Console.WriteLine( "(3) Quit");
+                Console.WriteLine();
             }
 
             
@@ -37,6 +38,7 @@ namespace Capstone.Classes
                 {
                     case "1":
                         DisplayItems();
+                        break;
 
 
                 }
@@ -45,8 +47,16 @@ namespace Capstone.Classes
 
             void DisplayItems()
             {
+                List<CateringItem> items = catering.GetItems();
+              
                 
-                foreach (CateringItem item in cateringItems)
+                foreach (CateringItem item in items)
+                {
+
+                    Console.WriteLine();
+                    Console.WriteLine($"{item.Code} {item.Name} {item.Quantity} {item.Price}");
+                    Console.WriteLine();
+                }
             }
 
         }
