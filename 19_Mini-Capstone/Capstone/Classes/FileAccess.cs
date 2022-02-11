@@ -59,6 +59,23 @@ namespace Capstone.Classes
                     string line = sr.ReadLine();
                     string[] split = line.Split('|');
                     CateringItem item = new CateringItem();
+                    item.Type = split[0];
+                    if (item.Type == "A")
+                    {
+                        item.Type = "Appetizer";
+                    }
+                    else if (item.Type == "B")
+                    {
+                        item.Type = "Beverage";
+                    }
+                    else if (item.Type == "D")
+                    {
+                        item.Type = "Dessert";
+                    }
+                    else
+                    {
+                        item.Type = "Entree";
+                    }
                     item.Code = split[1];
                     item.Name = split[2];
                     item.Price = Decimal.Parse(split[3]);

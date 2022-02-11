@@ -15,7 +15,7 @@ namespace Capstone.Classes
         // in any other class.
 
         private Catering catering = new Catering();
-        
+
         public void RunInterface()
         {
 
@@ -61,8 +61,9 @@ namespace Capstone.Classes
                         DisplayItems();
                         Console.WriteLine("Select a product code");
                         catering.SelectProduct();
-                        
-                        
+                        break;
+                    case "3":
+                        catering.CompleteTransaction();
                         break;
 
                 }
@@ -103,7 +104,7 @@ namespace Capstone.Classes
 
 
 
-            
+
         }
     }
 }

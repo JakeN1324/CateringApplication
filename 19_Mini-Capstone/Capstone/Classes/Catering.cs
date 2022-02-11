@@ -69,6 +69,7 @@ namespace Capstone.Classes
 
 
             string codeChoice = Console.ReadLine();
+           
 
             bool validChoice = false;
             foreach (CateringItem item in items)
@@ -84,7 +85,7 @@ namespace Capstone.Classes
 
             if (validChoice == false)
             {
-                Console.WriteLine("Invalid selection");
+                Console.WriteLine("Invalid item selection");
                 
             }
 
@@ -93,7 +94,7 @@ namespace Capstone.Classes
 
             if (selecteditem.Quantity < 1)
             {
-                Console.WriteLine("Sold out");
+                Console.WriteLine("Item is sold out");
             }
             else if (quantityChoice > selecteditem.Quantity)
             {
@@ -111,6 +112,110 @@ namespace Capstone.Classes
 
             return shoppingCart;
 
+
+        }
+
+        public void CompleteTransaction()
+        {
+            decimal totalOrderCost = 0.00M;
+            foreach (CateringItem item in shoppingCart)
+            {
+                Console.WriteLine($"{item.AmountInCart} {item.Type} {item.Name} {item.Price} {(item.Price * item.AmountInCart)}");
+                if (item.Type == "Appetizer")
+                {
+                    Console.Write("You might need extra plates.");
+                }
+                else if (item.Type == "Beverage")
+                {
+                    Console.Write("Don't forget ice.");
+                }
+                else if (item.Type == "Dessert")
+                {
+                    Console.Write("Coffee goes with dessert.");
+                }
+                else
+                {
+                    Console.Write("Did you remember dessert?");
+                }
+
+                totalOrderCost += (item.Price * item.AmountInCart);
+            }
+
+            Console.WriteLine($"Total: ${totalOrderCost}");
+
+            decimal changeDue = accountBalance - totalOrderCost;
+
+            Dictionary<string, int> billTypes = new Dictionary<string, int>();
+            billTypes["Fifties"] = 0;
+            billTypes["Twenties"] = 0;
+            billTypes["Tens"] = 0;
+            billTypes["Fives"] = 0;
+            billTypes["Ones"] = 0;
+            billTypes["Quarters"] = 0;
+            billTypes["Dimes"] = 0;
+            billTypes["Nickels"] = 0;
+
+            while (changeDue > 0.00M)
+            {
+                if (changeDue - 50 >= 0)
+                {
+                    billTypes["Fifties"] += 1;
+                    changeDue -= 50;
+                    continue;
+                }
+                else if (changeDue - 20 >= 0)
+                {
+                    billTypes["Twenties"] += 1;
+                    changeDue -= 20;
+                    continue;
+                }
+                else if (changeDue - 10 >= 0)
+                {
+                    billTypes["Tens"] += 1;
+                    changeDue -= 10;
+                    continue;
+                }
+                else if (changeDue - 5 >= 0)
+                {
+                    billTypes["Fives"] += 1;
+                    changeDue -= 5;
+                    continue;
+                }
+                else if (changeDue - 1 >= 0)
+                {
+                    billTypes["Ones"] += 1;
+                    changeDue -= 1;
+                    continue;
+                }
+                else if (changeDue - 0.25M >= 0)
+                {
+                    billTypes["Quarters"] += 1;
+                    changeDue -= 0.25M;
+                    continue;
+                }
+                else if (changeDue - 0.10M >= 0)
+                {
+                    billTypes["Dimes"] += 1;
+                    changeDue -= 0.10M;
+                    continue;
+                }
+                else if (changeDue - 0.05M >= 0)
+                {
+                    billTypes["Nickels"] += 1;
+                    changeDue -= 0.05M;
+                    continue;
+                }
+            }
+
+            Console.WriteLine("You received");
+            foreach (KeyValuePair<string, int> kvp in billTypes)
+            {
+                if (kvp.Value > 0)
+                {
+                    Console.Write($" ({kvp.Value}) {kvp.Key},");
+                }
+            }
+            Console.Write(" in change");
 
         }
 
