@@ -10,17 +10,24 @@ namespace Capstone.Classes
         decimal accountBalance = 0.00M;
         private List<CateringItem> items = new List<CateringItem>();
         private FileAccess data = new FileAccess();
-        
-        
+        List<CateringItem> shoppingCart = new List<CateringItem>();
+
+
         public Catering()
         {
-            
+
         }
-        
+
         public List<CateringItem> GetItems()
         {
             items = data.GetCateringItems();
             return items;
+        }
+
+        public void OrderMenuBalance()
+        {
+            Console.WriteLine("Current Account Balance: " + accountBalance);
+
         }
 
         public decimal AddMoney()
@@ -48,13 +55,65 @@ namespace Capstone.Classes
 
             }
 
-            Console.WriteLine("Current Account Balance: " + accountBalance );
+
             return accountBalance;
 
 
 
         }
 
+        public List<CateringItem> SelectProduct()
+        {
 
-}
+            CateringItem selecteditem = new CateringItem();
+
+
+            string codeChoice = Console.ReadLine();
+
+            bool validChoice = false;
+            foreach (CateringItem item in items)
+            {
+                if (codeChoice == item.Code)
+                {
+                    validChoice = true;
+                    selecteditem = item;
+                    
+                }
+                
+            }
+
+            if (validChoice == false)
+            {
+                Console.WriteLine("Invalid selection");
+                
+            }
+
+            Console.WriteLine("Select the quantity of products");
+            int quantityChoice = int.Parse(Console.ReadLine());
+
+            if (selecteditem.Quantity < 1)
+            {
+                Console.WriteLine("Sold out");
+            }
+            else if (quantityChoice > selecteditem.Quantity)
+            {
+                Console.WriteLine("Insufficient stock");
+            }
+
+            if (selecteditem.Price * quantityChoice <= accountBalance)
+            {
+                selecteditem.AmountInCart = quantityChoice;
+                shoppingCart.Add(selecteditem);
+                accountBalance -= selecteditem.Price * quantityChoice;
+                
+            }
+
+
+            return shoppingCart;
+
+
+        }
+
+
+    }
 }

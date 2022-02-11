@@ -45,7 +45,9 @@ namespace Capstone.Classes
 
             while (!orderMenuDone)
             {
+
                 OrderMenu();
+                catering.OrderMenuBalance();
                 string input = Console.ReadLine();
 
                 switch (input)
@@ -57,8 +59,10 @@ namespace Capstone.Classes
                         break;
                     case "2":
                         DisplayItems();
-                        //SelectProduct();
-                        orderMenuDone = true;
+                        Console.WriteLine("Select a product code");
+                        catering.SelectProduct();
+                        
+                        
                         break;
 
                 }
@@ -72,6 +76,12 @@ namespace Capstone.Classes
                 Console.WriteLine();
             }
 
+            void OrderMenu()
+            {
+                Console.WriteLine("(1) Add Money");
+                Console.WriteLine("(2) Select Products");
+                Console.WriteLine("(3) Complete Transaction");
+            }
             void DisplayItems()
             {
                 List<CateringItem> items = catering.GetItems();
@@ -88,53 +98,12 @@ namespace Capstone.Classes
 
 
 
-            void OrderMenu()
-            {
-                Console.WriteLine("(1) Add Money");
-                Console.WriteLine("(2) Select Products");
-                Console.WriteLine("(3) Compplete Transaction");
-
-            }
-
-           
-
-
-            //CateringItem SelectProduct()
-            //{
-            //    List<CateringItem> items = catering.GetItems();
-            //    CateringItem selecteditem = new CateringItem();
-
-            //    Console.WriteLine("Select a product code");
-            //    string codeChoice = Console.ReadLine();
-
-            //    bool validChoice = false;
-            //    foreach (CateringItem item in items)
-            //    {
-            //        if (codeChoice == item.Code)
-            //        {
-            //            validChoice = true;
-            //            selecteditem = item;
-                      
-            //        }
-            //        return selecteditem;
-            //    }
-
-            //    if (validChoice == false)
-            //    {
-            //        Console.WriteLine("Invalid selection");
-            //        orderMenuDone = false;
-            //    }
-            //    Console.WriteLine("Select the quantity of products");
-            //    int quantityChoice = int.Parse(Console.ReadLine());
-                 
-            //    if(selecteditem.Quantity  )
-            //    {
-
-            //    }
 
 
 
-            //}
+
+
+            
         }
     }
 }
