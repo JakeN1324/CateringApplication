@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Capstone.Classes
 {
-    public class CateringItem
+    public class CateringItem  
     {
         public CateringItem (string name, decimal price, int quantity)
         {
@@ -12,7 +12,7 @@ namespace Capstone.Classes
             Price = price;
             Quantity = quantity;
         }
-        public CateringItem()
+        public CateringItem() 
         {
 
         }
@@ -21,6 +21,8 @@ namespace Capstone.Classes
 
         public int Quantity { get; private set; } = 25;
         public string Code { get; set; }
+
+        
 
         // This class should contain the definition for one catering item
 

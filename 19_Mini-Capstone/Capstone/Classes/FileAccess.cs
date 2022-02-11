@@ -15,42 +15,42 @@ namespace Capstone.Classes
         public List<CateringItem> GetCateringItems()
         {
             List<CateringItem> cateringItems = new List<CateringItem>();
-            List<string> sortedItems = new List<string>();
+            //List<string> sortedItems = new List<string>();
 
-            using (StreamReader sr = new StreamReader(filePath))
-            {
-                while (!sr.EndOfStream)
-                {
-                    string line = sr.ReadLine();
-                    string[] split = line.Split('|');
-                    CateringItem item = new CateringItem();
-                    item.Code = split[1];
-                    sortedItems.Add(item.Code);
-                }
+            //using (StreamReader sr = new StreamReader(filePath))
+            //{
+            //    while (!sr.EndOfStream)
+            //    {
+            //        string line = sr.ReadLine();
+            //        string[] split = line.Split('|');
+            //        CateringItem item = new CateringItem();
+            //        item.Code = split[1];
+            //        sortedItems.Add(item.Code);
+            //    }
                 
-            }
+            //}
             
-            foreach(CateringItem item in cateringItems)
-            {
+            //foreach(CateringItem item in cateringItems)
+            //{
                 
-            }
+            //}
 
-            foreach(string code in sortedItems)
-            {
-                using (StreamReader sr = new StreamReader(filePath))
-                {
-                    while (!sr.EndOfStream)
-                    {
-                        string line = sr.ReadLine();
-                        string[] split = line.Split('|');
-                        CateringItem item = new CateringItem();
-                        if (line.Contains(code))
-                        {
+            //foreach(string code in sortedItems)
+            //{
+            //    using (StreamReader sr = new StreamReader(filePath))
+            //    {
+            //        while (!sr.EndOfStream)
+            //        {
+            //            string line = sr.ReadLine();
+            //            string[] split = line.Split('|');
+            //            CateringItem item = new CateringItem();
+            //            if (line.Contains(code))
+            //            {
                             
-                        }
-                    }
-                }
-            }
+            //            }
+            //        }
+            //    }
+            //}
 
             using (StreamReader sr = new StreamReader(filePath))
             {

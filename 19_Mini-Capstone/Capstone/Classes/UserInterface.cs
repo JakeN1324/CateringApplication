@@ -15,7 +15,7 @@ namespace Capstone.Classes
         // in any other class.
 
         private Catering catering = new Catering();
-        decimal accountBalance = 0.00M;
+        
         public void RunInterface()
         {
 
@@ -51,7 +51,14 @@ namespace Capstone.Classes
                 switch (input)
                 {
                     case "1":
-                        AddMoney();
+                        Console.WriteLine("Enter the amount to add in a whole dollar amount: ");
+                        catering.AddMoney();
+
+                        break;
+                    case "2":
+                        DisplayItems();
+                        //SelectProduct();
+                        orderMenuDone = true;
                         break;
 
                 }
@@ -86,41 +93,48 @@ namespace Capstone.Classes
                 Console.WriteLine("(1) Add Money");
                 Console.WriteLine("(2) Select Products");
                 Console.WriteLine("(3) Compplete Transaction");
-                Console.WriteLine("Current Account Balance: " + accountBalance);
 
             }
 
-            decimal AddMoney()
-            {
+           
 
-                
-                Console.WriteLine("Enter the amount to add in a whole dollar amount: ");
-                decimal moneyToAdd = decimal.Parse(Console.ReadLine());
-                if (moneyToAdd == 1 || moneyToAdd == 5 || moneyToAdd == 10 || moneyToAdd == 20 || moneyToAdd == 50 || moneyToAdd == 100)
-                {
-                    accountBalance += moneyToAdd;
-                    
-                    if (accountBalance <= 1500)
-                    {
-                        return accountBalance;
-                    }
-                    else
-                    {
-                        accountBalance -= moneyToAdd;
-                        Console.WriteLine("Balance cannot exceed $1500");
-                    }
 
-                }
-                else
-                {
-                    
-                    Console.WriteLine("Invalid Bill Amount");
-                    
-                }
+            //CateringItem SelectProduct()
+            //{
+            //    List<CateringItem> items = catering.GetItems();
+            //    CateringItem selecteditem = new CateringItem();
 
-                return accountBalance;
+            //    Console.WriteLine("Select a product code");
+            //    string codeChoice = Console.ReadLine();
 
-            }
+            //    bool validChoice = false;
+            //    foreach (CateringItem item in items)
+            //    {
+            //        if (codeChoice == item.Code)
+            //        {
+            //            validChoice = true;
+            //            selecteditem = item;
+                      
+            //        }
+            //        return selecteditem;
+            //    }
+
+            //    if (validChoice == false)
+            //    {
+            //        Console.WriteLine("Invalid selection");
+            //        orderMenuDone = false;
+            //    }
+            //    Console.WriteLine("Select the quantity of products");
+            //    int quantityChoice = int.Parse(Console.ReadLine());
+                 
+            //    if(selecteditem.Quantity  )
+            //    {
+
+            //    }
+
+
+
+            //}
         }
     }
 }
