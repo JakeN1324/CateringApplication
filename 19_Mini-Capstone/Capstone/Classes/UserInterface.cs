@@ -64,6 +64,9 @@ namespace Capstone.Classes
                         break;
                     case "3":
                         catering.CompleteTransaction();
+                        orderMenuDone = true;
+                        mainMenuDone = false;
+                        MainMenu();
                         break;
 
                 }
