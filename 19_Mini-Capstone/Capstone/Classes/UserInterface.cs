@@ -59,14 +59,13 @@ namespace Capstone.Classes
                         break;
                     case "2":
                         DisplayItems();
+                        
                         Console.WriteLine("Select a product code");
                         catering.SelectProduct();
                         break;
                     case "3":
                         catering.CompleteTransaction();
                         orderMenuDone = true;
-                        mainMenuDone = false;
-                        MainMenu();
                         break;
 
                 }
@@ -88,6 +87,7 @@ namespace Capstone.Classes
             }
             void DisplayItems()
             {
+                catering.UpdateList();
                 List<CateringItem> items = catering.GetItems();
 
 
