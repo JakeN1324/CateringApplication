@@ -38,6 +38,14 @@ namespace Capstone.Classes
                     case "2":
                         mainMenuDone = true;
                         break;
+                    case "3":
+                        Environment.Exit(0);
+                        break;
+                    default:
+                        Console.WriteLine();
+                        Console.WriteLine("Please enter a valid selection");
+                        break;
+
 
                 }
 
@@ -67,6 +75,11 @@ namespace Capstone.Classes
                         catering.CompleteTransaction();
                         orderMenuDone = true;
                         break;
+                    default:
+                        Console.WriteLine();
+                        Console.WriteLine("Please enter a valid selection");
+                        break;
+
 
                 }
             }
@@ -100,7 +113,12 @@ namespace Capstone.Classes
                 }
             }
 
+            void SelectProduct()
+            {
 
+            }
+
+            void 
 
 
 
