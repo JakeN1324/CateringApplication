@@ -12,7 +12,8 @@ namespace Capstone.Classes
         private FileAccess data = new FileAccess();
         List<CateringItem> shoppingCart = new List<CateringItem>();
         CateringItem selecteditem = new CateringItem();
-
+        //populate items with data.GetCateringItems
+        PurchaseLog purchaseLog = new PurchaseLog();
 
         public Catering()
         {
@@ -23,8 +24,24 @@ namespace Capstone.Classes
 
         public List<CateringItem> GetItems()
         {
+
             items = data.GetCateringItems();
+            foreach (CateringItem item in items)
+            {
+                if (selecteditem.Name == item.Name)
+                {
+                    item.Quantity -= selecteditem.AmountInCart;
+
+                }
+
+            }
             return items;
+        }
+
+        public void OrderMenuBalance()
+        {
+            Console.WriteLine("Current Account Balance: " + accountBalance);
+
         }
 
         public decimal AddMoney()
@@ -32,15 +49,17 @@ namespace Capstone.Classes
             decimal moneyToAdd = decimal.Parse(Console.ReadLine());
             if (moneyToAdd == 1 || moneyToAdd == 5 || moneyToAdd == 10 || moneyToAdd == 20 || moneyToAdd == 50 || moneyToAdd == 100)
             {
-                accountBalance += moneyToAdd;
+                
 
-                if (accountBalance <= 1500)
+                if (accountBalance + moneyToAdd <= 1500)
                 {
+                    accountBalance += moneyToAdd;
+                    purchaseLog.AddToLog("ADD MONEY: ", moneyToAdd, accountBalance);
                     return accountBalance;
                 }
                 else
                 {
-                    accountBalance -= moneyToAdd;
+                    
                     Console.WriteLine("Balance cannot exceed $1500");
                 }
 
@@ -52,7 +71,7 @@ namespace Capstone.Classes
 
             }
 
-            
+           
             return accountBalance;
 
 
@@ -88,6 +107,7 @@ namespace Capstone.Classes
 
             Console.WriteLine("Select the quantity of products");
             int quantityChoice = int.Parse(Console.ReadLine());
+            
 
             if (selecteditem.Quantity < 1)
             {
@@ -103,6 +123,7 @@ namespace Capstone.Classes
                 selecteditem.AmountInCart = quantityChoice;
                 shoppingCart.Add(selecteditem);
                 accountBalance -= selecteditem.Price * quantityChoice;
+                purchaseLog.AddToLog($"{quantityChoice} {selecteditem.Name} {selecteditem.Code}", selecteditem.Price * quantityChoice, accountBalance);
                 
             }
 
@@ -139,8 +160,8 @@ namespace Capstone.Classes
             }
 
             Console.WriteLine($"Total: ${totalOrderCost}");
+            decimal changedue = accountBalance;
 
-            decimal changeDue = accountBalance - totalOrderCost;
 
             Dictionary<string, int> billTypes = new Dictionary<string, int>();
             billTypes["Fifties"] = 0;
@@ -152,59 +173,60 @@ namespace Capstone.Classes
             billTypes["Dimes"] = 0;
             billTypes["Nickels"] = 0;
 
-            while (changeDue > 0.00M)
+            while (accountBalance > 0.00M)
             {
-                if (changeDue - 50 >= 0)
+                if (accountBalance - 50 >= 0)
                 {
                     billTypes["Fifties"] += 1;
-                    changeDue -= 50;
+                    accountBalance -= 50;
                     continue;
                 }
-                else if (changeDue - 20 >= 0)
+                else if (accountBalance - 20 >= 0)
                 {
                     billTypes["Twenties"] += 1;
-                    changeDue -= 20;
+                    accountBalance -= 20;
                     continue;
                 }
-                else if (changeDue - 10 >= 0)
+                else if (accountBalance - 10 >= 0)
                 {
                     billTypes["Tens"] += 1;
-                    changeDue -= 10;
+                    accountBalance -= 10;
                     continue;
                 }
-                else if (changeDue - 5 >= 0)
+                else if (accountBalance - 5 >= 0)
                 {
                     billTypes["Fives"] += 1;
-                    changeDue -= 5;
+                    accountBalance -= 5;
                     continue;
                 }
-                else if (changeDue - 1 >= 0)
+                else if (accountBalance - 1 >= 0)
                 {
                     billTypes["Ones"] += 1;
-                    changeDue -= 1;
+                    accountBalance -= 1;
                     continue;
                 }
-                else if (changeDue - 0.25M >= 0)
+                else if (accountBalance - 0.25M >= 0)
                 {
                     billTypes["Quarters"] += 1;
-                    changeDue -= 0.25M;
+                    accountBalance -= 0.25M;
                     continue;
                 }
-                else if (changeDue - 0.10M >= 0)
+                else if (accountBalance - 0.10M >= 0)
                 {
                     billTypes["Dimes"] += 1;
-                    changeDue -= 0.10M;
+                    accountBalance -= 0.10M;
                     continue;
                 }
-                else if (changeDue - 0.05M >= 0)
+                else if (accountBalance - 0.05M >= 0)
                 {
                     billTypes["Nickels"] += 1;
-                    changeDue -= 0.05M;
+                    accountBalance -= 0.05M;
                     continue;
                 }
+               
             }
-
-            Console.WriteLine("You received");
+            purchaseLog.AddToLog("GIVE CHANGE:", changedue, accountBalance);
+            Console.Write("You received");
             foreach (KeyValuePair<string, int> kvp in billTypes)
             {
                 if (kvp.Value > 0)
@@ -212,7 +234,7 @@ namespace Capstone.Classes
                     Console.Write($" ({kvp.Value}) {kvp.Key},");
                 }
             }
-            Console.Write(" in change");
+            Console.WriteLine(" in change");
 
         }
 
