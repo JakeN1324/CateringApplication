@@ -54,7 +54,7 @@ namespace Capstone.Classes
                 {
                     case "1":
                         Console.WriteLine("Enter the amount to add in a whole dollar amount: ");
-                        catering.AddMoney();
+                        catering.AddMoney(); //use user input as parameter
 
                         break;
                     case "2":
@@ -87,7 +87,7 @@ namespace Capstone.Classes
             }
             void DisplayItems()
             {
-                catering.UpdateList();
+                
                 List<CateringItem> items = catering.GetItems();
 
 

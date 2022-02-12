@@ -12,7 +12,7 @@ namespace Capstone.Classes
         private FileAccess data = new FileAccess();
         List<CateringItem> shoppingCart = new List<CateringItem>();
         CateringItem selecteditem = new CateringItem();
-
+        //populate items with data.GetCateringItems
 
         public Catering()
         {
@@ -23,7 +23,17 @@ namespace Capstone.Classes
 
         public List<CateringItem> GetItems()
         {
+
             items = data.GetCateringItems();
+            foreach (CateringItem item in items)
+            {
+                if (selecteditem.Name == item.Name)
+                {
+                    item.Quantity -= selecteditem.AmountInCart;
+
+                }
+
+            }
             return items;
         }
 
@@ -33,20 +43,21 @@ namespace Capstone.Classes
 
         }
 
-        public decimal AddMoney()
+        public decimal AddMoney() //take moneyToAdd as parameter
         {
             decimal moneyToAdd = decimal.Parse(Console.ReadLine());
             if (moneyToAdd == 1 || moneyToAdd == 5 || moneyToAdd == 10 || moneyToAdd == 20 || moneyToAdd == 50 || moneyToAdd == 100)
             {
-                accountBalance += moneyToAdd;
+                
 
-                if (accountBalance <= 1500)
+                if (accountBalance + moneyToAdd <= 1500)
                 {
+                    accountBalance += moneyToAdd;
                     return accountBalance;
                 }
                 else
                 {
-                    accountBalance -= moneyToAdd;
+                    
                     Console.WriteLine("Balance cannot exceed $1500");
                 }
 
@@ -94,6 +105,7 @@ namespace Capstone.Classes
 
             Console.WriteLine("Select the quantity of products");
             int quantityChoice = int.Parse(Console.ReadLine());
+            
 
             if (selecteditem.Quantity < 1)
             {
