@@ -11,12 +11,15 @@ namespace Capstone.Classes
         private List<CateringItem> items = new List<CateringItem>();
         private FileAccess data = new FileAccess();
         List<CateringItem> shoppingCart = new List<CateringItem>();
+        CateringItem selecteditem = new CateringItem();
 
 
         public Catering()
         {
-
+            
         }
+
+        
 
         public List<CateringItem> GetItems()
         {
@@ -65,7 +68,7 @@ namespace Capstone.Classes
         public List<CateringItem> SelectProduct()
         {
 
-            CateringItem selecteditem = new CateringItem();
+            
 
 
             string codeChoice = Console.ReadLine();
@@ -107,12 +110,28 @@ namespace Capstone.Classes
                 shoppingCart.Add(selecteditem);
                 accountBalance -= selecteditem.Price * quantityChoice;
                 
+                
             }
 
-
+            
+            
             return shoppingCart;
 
 
+        }
+
+        public List<CateringItem> UpdateList()
+        {
+            foreach (CateringItem item in items)
+            {
+                if (selecteditem.Name == item.Name)
+                {
+                    item.Quantity -= selecteditem.Quantity;
+                    
+                }
+                
+            }
+            return items;
         }
 
         public void CompleteTransaction()
@@ -143,7 +162,7 @@ namespace Capstone.Classes
 
             Console.WriteLine($"Total: ${totalOrderCost}");
 
-            decimal changeDue = accountBalance - totalOrderCost;
+            decimal changeDue = accountBalance;
 
             Dictionary<string, int> billTypes = new Dictionary<string, int>();
             billTypes["Fifties"] = 0;
