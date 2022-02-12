@@ -9,7 +9,7 @@ namespace Capstone.Classes
     {
         public string logDirectory = @"C:\Catering";
         public string logFile = "Log.txt";
-        string logFullPath = Path.Combine(logDirectory, logFile);
+        
 
     }
 }
