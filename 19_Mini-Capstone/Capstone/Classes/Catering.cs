@@ -11,68 +11,27 @@ namespace Capstone.Classes
         public List<CateringItem> ShoppingCart { get; set; } = new List<CateringItem>();
         public decimal TotalOrderCost { get; set; }
         public Dictionary<string, int> BillTypes { get; set; } = new Dictionary<string, int>();
-        private List<CateringItem> items = new List<CateringItem>();
+        public List<CateringItem> items { get; set; } = new List<CateringItem>();
         private FileAccess data = new FileAccess();
         CateringItem selecteditem = new CateringItem();
         PurchaseLog purchaseLog = new PurchaseLog();
 
         public Catering()
         {
-            
+            items = data.GetCateringItems();
         }
 
         
 
-        public List<CateringItem> GetItems()
-        {
-
-            items = data.GetCateringItems();
-            foreach (CateringItem item in items)
-            {
-                if (selecteditem.Name == item.Name)
-                {
-                    item.Quantity -= selecteditem.AmountInCart;
-
-                }
-
-            }
-            return items;
-        }
+        
 
         
 
         public decimal AddMoney(decimal moneyToAdd)
         {
-            
-            if (moneyToAdd == 1 || moneyToAdd == 5 || moneyToAdd == 10 || moneyToAdd == 20 || moneyToAdd == 50 || moneyToAdd == 100)
-            {
-                
-
-                if (accountBalance + moneyToAdd <= 1500)
-                {
-                    accountBalance += moneyToAdd;
-                    purchaseLog.AddToLog("ADD MONEY: ", moneyToAdd, accountBalance);
-                    return accountBalance;
-                }
-                else
-                {
-                    
-                    Console.WriteLine("Balance cannot exceed $1500");
-                }
-
-            }
-            else
-            {
-
-                Console.WriteLine("Invalid Bill Amount");
-
-            }
-
-           
-            return accountBalance;
-
-
-
+            accountBalance += moneyToAdd;
+            purchaseLog.AddToLog("ADD MONEY: ", moneyToAdd, accountBalance);
+            return accountBalance;          
         }
 
         public List<CateringItem> SelectProduct(string codeChoice, int quantityChoice)
@@ -84,35 +43,24 @@ namespace Capstone.Classes
             
            
 
-            bool validChoice = false;
+            
             foreach (CateringItem item in items)
             {
                 if (codeChoice == item.Code)
                 {
-                    validChoice = true;
+                    
                     selecteditem = item;
                     
                 }
                 
             }
 
-            if (validChoice == false)
-            {
-                Console.WriteLine("Invalid item selection");
-                
-            }
+            
 
             
             
 
-            if (selecteditem.Quantity < 1)
-            {
-                Console.WriteLine("Item is sold out");
-            }
-            else if (quantityChoice > selecteditem.Quantity)
-            {
-                Console.WriteLine("Insufficient stock");
-            }
+            
 
             if (selecteditem.Price * quantityChoice <= accountBalance)
             {
@@ -120,7 +68,24 @@ namespace Capstone.Classes
                 ShoppingCart.Add(selecteditem);
                 accountBalance -= selecteditem.Price * quantityChoice;
                 purchaseLog.AddToLog($"{quantityChoice} {selecteditem.Name} {selecteditem.Code}", selecteditem.Price * quantityChoice, accountBalance);
-                
+                foreach (CateringItem item in items)
+                {
+                    if (selecteditem.Name == item.Name)
+                    {
+                        item.Quantity -= quantityChoice;
+                        if (item.Quantity - quantityChoice == 0)
+                        {
+                            if (item.Quantity == 0)
+                            {
+                                item.Quantity = int.Parse("SOLD OUT");
+                            }
+                        }
+                        return items;
+
+                    }
+
+                }
+
             }
 
 

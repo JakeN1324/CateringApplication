@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Capstone.Classes
@@ -15,8 +16,8 @@ namespace Capstone.Classes
         // in any other class.
 
         private Catering catering = new Catering();
-        
-        
+
+
         public void RunInterface()
         {
 
@@ -52,7 +53,7 @@ namespace Capstone.Classes
 
             }
 
-           
+
 
             while (!orderMenuDone)
             {
@@ -70,12 +71,12 @@ namespace Capstone.Classes
                         break;
                     case "2":
                         DisplayItems();
-                        SelectAProduct(); 
+                        SelectAProduct();
                         break;
                     case "3":
                         CompleteAPayment();
                         orderMenuDone = true;
-                        
+
                         break;
                     default:
                         Console.WriteLine();
@@ -85,7 +86,7 @@ namespace Capstone.Classes
 
                 }
             }
-            
+
         }
         private void MainMenu()
         {
@@ -103,22 +104,48 @@ namespace Capstone.Classes
         }
         private void DisplayItems() //todo Add try catch block
         {
-
-            List<CateringItem> items = catering.GetItems();
-
-
-            foreach (CateringItem item in items)
+            try
             {
+                foreach (CateringItem item in catering.items)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"{item.Code} {item.Name} {item.Quantity} {item.Price}");
+                    Console.WriteLine();
+                }
 
-                Console.WriteLine();
-                Console.WriteLine($"{item.Code} {item.Name} {item.Quantity} {item.Price}");
-                Console.WriteLine();
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine("Error reading file: " + ex.Message);
+                return;
             }
         }
 
-        private void AddToAccount() //todo Add try catch block
+        private void AddToAccount() 
         {
-            catering.AddMoney(decimal.Parse(Console.ReadLine()));
+            decimal moneyToAdd = decimal.Parse(Console.ReadLine());
+
+            if (moneyToAdd != 1 && moneyToAdd != 5 && moneyToAdd != 10 && moneyToAdd != 20 && moneyToAdd != 50 && moneyToAdd != 100)
+            {
+                Console.WriteLine("Invalid Bill Amount");
+                return;
+            }
+            
+            if (catering.accountBalance + moneyToAdd > 1500)
+            {
+                Console.WriteLine("Balance cannot exceed $1500");
+                return;
+            }
+            
+            try
+            {
+                catering.AddMoney(moneyToAdd);
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine("Error adding to balance: " + ex.Message);
+                return;
+            }
         }
 
         private void SelectAProduct()
@@ -126,16 +153,55 @@ namespace Capstone.Classes
             Console.WriteLine("Select a product code");
             string codeChoice = Console.ReadLine();
             
+            bool validChoice = false;
+            CateringItem itemChoice = new CateringItem();
+            foreach (CateringItem item in catering.items)
+            {
+                if (codeChoice == item.Code)
+                {
+                    validChoice = true;
+                    itemChoice = item;
+                }
+
+            }
+
+            if (validChoice == false)
+            {
+                Console.WriteLine("Invalid item selection");
+                return;
+            }
+
             Console.WriteLine("Select the quantity of products");
             int quantityChoice = int.Parse(Console.ReadLine());
 
-            catering.SelectProduct(codeChoice, quantityChoice);
+            if (itemChoice.Quantity < 1)
+            {
+                Console.WriteLine("Item is sold out");
+                return;
+            }
+            else if (quantityChoice > itemChoice.Quantity)
+            {
+                Console.WriteLine("Insufficient stock");
+                return;
+            }
+
+            try
+            {
+                catering.SelectProduct(codeChoice, quantityChoice);
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine("Error selecting product: " + ex.Message);
+                return;
+            }
         }
 
         private void CompleteAPayment() //todo Add try catch block
         {
+            try
+            {
             catering.CompleteTransaction();
-            
+
             foreach (CateringItem item in catering.ShoppingCart)
             {
                 Console.WriteLine($"{item.AmountInCart} {item.Type} {item.Name} {item.Price} {(item.Price * item.AmountInCart)}");
@@ -160,7 +226,7 @@ namespace Capstone.Classes
                 Console.WriteLine();
             }
 
-            
+
             Console.WriteLine($"Total: ${catering.TotalOrderCost}");
             Console.WriteLine();
             Console.Write("You received");
@@ -174,7 +240,14 @@ namespace Capstone.Classes
             Console.WriteLine(" in change");
             Console.WriteLine();
 
-            
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine("Error completing purchase: " + ex.Message);
+                return;
+            }
+
+
 
 
         }
