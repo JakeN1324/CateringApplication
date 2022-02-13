@@ -19,6 +19,7 @@ namespace Capstone.Classes
         public Catering()
         {
             items = data.GetCateringItems();
+            
         }
 
         
@@ -41,9 +42,9 @@ namespace Capstone.Classes
 
 
             
-           
 
-            
+
+
             foreach (CateringItem item in items)
             {
                 if (codeChoice == item.Code)
@@ -73,14 +74,12 @@ namespace Capstone.Classes
                     if (selecteditem.Name == item.Name)
                     {
                         item.Quantity -= quantityChoice;
-                        if (item.Quantity - quantityChoice == 0)
-                        {
-                            if (item.Quantity == 0)
-                            {
-                                item.Quantity = int.Parse("SOLD OUT");
-                            }
-                        }
-                        return items;
+                        //if (item.Quantity == 0)
+                        //{
+                        //    item.Quantity.ToString("Sold Out");
+                        //    return items;
+                        //}
+
 
                     }
 

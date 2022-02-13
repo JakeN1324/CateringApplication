@@ -16,7 +16,10 @@ namespace Capstone.Classes
         // in any other class.
 
         private Catering catering = new Catering();
-
+        string productCodesDisplay = "Product Codes";
+        string descriptionDisplay = "Description";
+        string quantityDisplay = "Qty";
+        string priceDisplay = "Price";
 
         public void RunInterface()
         {
@@ -75,7 +78,7 @@ namespace Capstone.Classes
                         break;
                     case "3":
                         CompleteAPayment();
-                        orderMenuDone = true;
+                        
 
                         break;
                     default:
@@ -102,14 +105,26 @@ namespace Capstone.Classes
             Console.WriteLine("(2) Select Products");
             Console.WriteLine("(3) Complete Transaction");
         }
-        private void DisplayItems() //todo Add try catch block
+        private void DisplayItems() 
         {
+            
             try
             {
+                Console.WriteLine(productCodesDisplay + descriptionDisplay.PadLeft(18) + quantityDisplay.PadLeft(16) + priceDisplay.PadLeft(12));
                 foreach (CateringItem item in catering.items)
                 {
                     Console.WriteLine();
-                    Console.WriteLine($"{item.Code} {item.Name} {item.Quantity} {item.Price}");
+                    if (item.Quantity == 0)
+                    {
+                        Console.WriteLine($"{item.Code} {item.Name.PadLeft((item.Name.Length + 17))}         SOLD OUT {item.Price.ToString().PadLeft(12)}");
+
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{item.Code} {item.Name.PadLeft((item.Name.Length + 17))} {item.Quantity.ToString().PadLeft(25 - item.Name.Length)} {item.Price.ToString().PadLeft(12)}");
+                    }
+                    
+                    
                     Console.WriteLine();
                 }
 

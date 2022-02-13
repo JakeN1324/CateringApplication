@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Linq;
 using System.Text;
 
 namespace Capstone.Classes
@@ -14,43 +14,7 @@ namespace Capstone.Classes
 
         public List<CateringItem> GetCateringItems()
         {
-            List<CateringItem> cateringItems = new List<CateringItem>();
-            //List<string> sortedItems = new List<string>();
-
-            //using (StreamReader sr = new StreamReader(filePath))
-            //{
-            //    while (!sr.EndOfStream)
-            //    {
-            //        string line = sr.ReadLine();
-            //        string[] split = line.Split('|');
-            //        CateringItem item = new CateringItem();
-            //        item.Code = split[1];
-            //        sortedItems.Add(item.Code);
-            //    }
-                
-            //}
-            
-            //foreach(CateringItem item in cateringItems)
-            //{
-                
-            //}
-
-            //foreach(string code in sortedItems)
-            //{
-            //    using (StreamReader sr = new StreamReader(filePath))
-            //    {
-            //        while (!sr.EndOfStream)
-            //        {
-            //            string line = sr.ReadLine();
-            //            string[] split = line.Split('|');
-            //            CateringItem item = new CateringItem();
-            //            if (line.Contains(code))
-            //            {
-                            
-            //            }
-            //        }
-            //    }
-            //}
+            List<CateringItem> cateringItems = new List<CateringItem>();         
 
             using (StreamReader sr = new StreamReader(filePath))
             {
@@ -84,7 +48,14 @@ namespace Capstone.Classes
 
                 }
             }
-            return cateringItems;
+            
+
+            List<CateringItem> sortedList = cateringItems.OrderBy(cateringItems => cateringItems.Code).ToList();
+            return sortedList;
+
+
+            
+
         }
 
 
