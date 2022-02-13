@@ -7,12 +7,14 @@ namespace Capstone.Classes
     public class Catering
     {
         // This class should contain all the "work" for catering
-        decimal accountBalance = 0.00M;
+        public decimal accountBalance { get; set; } = 0.00M;
+        public List<CateringItem> ShoppingCart { get; set; } = new List<CateringItem>();
+        public decimal TotalOrderCost { get; set; }
+        public Dictionary<string, int> BillTypes { get; set; } = new Dictionary<string, int>();
         private List<CateringItem> items = new List<CateringItem>();
         private FileAccess data = new FileAccess();
-        List<CateringItem> shoppingCart = new List<CateringItem>();
         CateringItem selecteditem = new CateringItem();
-        //populate items with data.GetCateringItems
+        PurchaseLog purchaseLog = new PurchaseLog();
 
         public Catering()
         {
@@ -37,15 +39,11 @@ namespace Capstone.Classes
             return items;
         }
 
-        public void OrderMenuBalance()
-        {
-            Console.WriteLine("Current Account Balance: " + accountBalance);
+        
 
-        }
-
-        public decimal AddMoney() //take moneyToAdd as parameter
+        public decimal AddMoney(decimal moneyToAdd)
         {
-            decimal moneyToAdd = decimal.Parse(Console.ReadLine());
+            
             if (moneyToAdd == 1 || moneyToAdd == 5 || moneyToAdd == 10 || moneyToAdd == 20 || moneyToAdd == 50 || moneyToAdd == 100)
             {
                 
@@ -53,6 +51,7 @@ namespace Capstone.Classes
                 if (accountBalance + moneyToAdd <= 1500)
                 {
                     accountBalance += moneyToAdd;
+                    purchaseLog.AddToLog("ADD MONEY: ", moneyToAdd, accountBalance);
                     return accountBalance;
                 }
                 else
@@ -69,20 +68,20 @@ namespace Capstone.Classes
 
             }
 
-
+           
             return accountBalance;
 
 
 
         }
 
-        public List<CateringItem> SelectProduct()
+        public List<CateringItem> SelectProduct(string codeChoice, int quantityChoice)
         {
 
+            CateringItem selecteditem = new CateringItem();
+
+
             
-
-
-            string codeChoice = Console.ReadLine();
            
 
             bool validChoice = false;
@@ -103,8 +102,7 @@ namespace Capstone.Classes
                 
             }
 
-            Console.WriteLine("Select the quantity of products");
-            int quantityChoice = int.Parse(Console.ReadLine());
+            
             
 
             if (selecteditem.Quantity < 1)
@@ -119,137 +117,97 @@ namespace Capstone.Classes
             if (selecteditem.Price * quantityChoice <= accountBalance)
             {
                 selecteditem.AmountInCart = quantityChoice;
-                shoppingCart.Add(selecteditem);
+                ShoppingCart.Add(selecteditem);
                 accountBalance -= selecteditem.Price * quantityChoice;
-                
-                
-            }
-
-            
-            
-            return shoppingCart;
-
-
-        }
-
-        public List<CateringItem> UpdateList()
-        {
-            foreach (CateringItem item in items)
-            {
-                if (selecteditem.Name == item.Name)
-                {
-                    item.Quantity -= selecteditem.Quantity;
-                    
-                }
+                purchaseLog.AddToLog($"{quantityChoice} {selecteditem.Name} {selecteditem.Code}", selecteditem.Price * quantityChoice, accountBalance);
                 
             }
-            return items;
+
+
+            return ShoppingCart;
+
+
         }
 
         public void CompleteTransaction()
         {
-            decimal totalOrderCost = 0.00M;
-            foreach (CateringItem item in shoppingCart)
-            {
-                Console.WriteLine($"{item.AmountInCart} {item.Type} {item.Name} {item.Price} {(item.Price * item.AmountInCart)}");
-                if (item.Type == "Appetizer")
-                {
-                    Console.Write("You might need extra plates.");
-                }
-                else if (item.Type == "Beverage")
-                {
-                    Console.Write("Don't forget ice.");
-                }
-                else if (item.Type == "Dessert")
-                {
-                    Console.Write("Coffee goes with dessert.");
-                }
-                else
-                {
-                    Console.Write("Did you remember dessert?");
-                }
-
-                totalOrderCost += (item.Price * item.AmountInCart);
+            TotalOrderCost = 0.00M;
+            foreach (CateringItem item in ShoppingCart)
+            {               
+                TotalOrderCost += (item.Price * item.AmountInCart);
             }
 
-            Console.WriteLine($"Total: ${totalOrderCost}");
+            
+            decimal changedue = accountBalance;
 
-            decimal changeDue = accountBalance;
 
-            Dictionary<string, int> billTypes = new Dictionary<string, int>();
-            billTypes["Fifties"] = 0;
-            billTypes["Twenties"] = 0;
-            billTypes["Tens"] = 0;
-            billTypes["Fives"] = 0;
-            billTypes["Ones"] = 0;
-            billTypes["Quarters"] = 0;
-            billTypes["Dimes"] = 0;
-            billTypes["Nickels"] = 0;
+            
+            BillTypes["Fifties"] = 0;
+            BillTypes["Twenties"] = 0;
+            BillTypes["Tens"] = 0;
+            BillTypes["Fives"] = 0;
+            BillTypes["Ones"] = 0;
+            BillTypes["Quarters"] = 0;
+            BillTypes["Dimes"] = 0;
+            BillTypes["Nickels"] = 0;
 
-            while (changeDue > 0.00M)
+            while (accountBalance > 0.00M)
             {
-                if (changeDue - 50 >= 0)
+                if (accountBalance - 50 >= 0)
                 {
-                    billTypes["Fifties"] += 1;
-                    changeDue -= 50;
+                    BillTypes["Fifties"] += 1;
+                    accountBalance -= 50;
                     continue;
                 }
-                else if (changeDue - 20 >= 0)
+                else if (accountBalance - 20 >= 0)
                 {
-                    billTypes["Twenties"] += 1;
-                    changeDue -= 20;
+                    BillTypes["Twenties"] += 1;
+                    accountBalance -= 20;
                     continue;
                 }
-                else if (changeDue - 10 >= 0)
+                else if (accountBalance - 10 >= 0)
                 {
-                    billTypes["Tens"] += 1;
-                    changeDue -= 10;
+                    BillTypes["Tens"] += 1;
+                    accountBalance -= 10;
                     continue;
                 }
-                else if (changeDue - 5 >= 0)
+                else if (accountBalance - 5 >= 0)
                 {
-                    billTypes["Fives"] += 1;
-                    changeDue -= 5;
+                    BillTypes["Fives"] += 1;
+                    accountBalance -= 5;
                     continue;
                 }
-                else if (changeDue - 1 >= 0)
+                else if (accountBalance - 1 >= 0)
                 {
-                    billTypes["Ones"] += 1;
-                    changeDue -= 1;
+                    BillTypes["Ones"] += 1;
+                    accountBalance -= 1;
                     continue;
                 }
-                else if (changeDue - 0.25M >= 0)
+                else if (accountBalance - 0.25M >= 0)
                 {
-                    billTypes["Quarters"] += 1;
-                    changeDue -= 0.25M;
+                    BillTypes["Quarters"] += 1;
+                    accountBalance -= 0.25M;
                     continue;
                 }
-                else if (changeDue - 0.10M >= 0)
+                else if (accountBalance - 0.10M >= 0)
                 {
-                    billTypes["Dimes"] += 1;
-                    changeDue -= 0.10M;
+                    BillTypes["Dimes"] += 1;
+                    accountBalance -= 0.10M;
                     continue;
                 }
-                else if (changeDue - 0.05M >= 0)
+                else if (accountBalance - 0.05M >= 0)
                 {
-                    billTypes["Nickels"] += 1;
-                    changeDue -= 0.05M;
+                    BillTypes["Nickels"] += 1;
+                    accountBalance -= 0.05M;
                     continue;
                 }
+               
             }
-
-            Console.WriteLine("You received");
-            foreach (KeyValuePair<string, int> kvp in billTypes)
-            {
-                if (kvp.Value > 0)
-                {
-                    Console.Write($" ({kvp.Value}) {kvp.Key},");
-                }
-            }
-            Console.Write(" in change");
+            purchaseLog.AddToLog("GIVE CHANGE:", changedue, accountBalance);
+            
 
         }
 
 
-    }
+}
 }
