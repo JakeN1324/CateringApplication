@@ -199,6 +199,11 @@ namespace Capstone.Classes
                 Console.WriteLine("Insufficient stock");
                 return;
             }
+            else if (itemChoice.Price * quantityChoice > catering.accountBalance)
+            {
+                Console.WriteLine("Insufficient funds");
+                return;
+            }
 
             try
             {
