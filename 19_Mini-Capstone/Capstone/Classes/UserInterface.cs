@@ -6,27 +6,14 @@ using System.Text;
 namespace Capstone.Classes
 {
     public class UserInterface
-    {
-        // This class provides all user communications, but not much else.
-        // All the "work" of the application should be done elsewhere
-
-        // ALL instances of Console.ReadLine and Console.WriteLine should 
-        // be in this class.
-        // NO instances of Console.ReadLine or Console.WriteLIne should be
-        // in any other class.
-
+    {        
         private Catering catering = new Catering();
         string productCodesDisplay = "Product Codes";
         string descriptionDisplay = "Description";
         string quantityDisplay = "Qty";
         string priceDisplay = "Price";
-
         public void RunInterface()
         {
-
-
-
-
             bool mainMenuDone = false;
             bool orderMenuDone = false;
 
@@ -50,13 +37,9 @@ namespace Capstone.Classes
                         Console.WriteLine();
                         Console.WriteLine("Please enter a valid selection");
                         break;
-
-
                 }
 
             }
-
-
 
             while (!orderMenuDone)
             {
@@ -70,23 +53,18 @@ namespace Capstone.Classes
                     case "1":
                         Console.WriteLine("Enter the amount to add in a whole dollar amount: ");
                         AddToAccount();
-
                         break;
                     case "2":
                         DisplayItems();
                         SelectAProduct();
                         break;
                     case "3":
-                        CompleteAPayment();
-                        
-
+                        CompleteAPayment();                       
                         break;
                     default:
                         Console.WriteLine();
                         Console.WriteLine("Please enter a valid selection");
                         break;
-
-
                 }
             }
 
@@ -106,8 +84,7 @@ namespace Capstone.Classes
             Console.WriteLine("(3) Complete Transaction");
         }
         private void DisplayItems() 
-        {
-            
+        {           
             try
             {
                 Console.WriteLine(productCodesDisplay + descriptionDisplay.PadLeft(18) + quantityDisplay.PadLeft(16) + priceDisplay.PadLeft(12));
@@ -117,13 +94,11 @@ namespace Capstone.Classes
                     if (item.Quantity == 0)
                     {
                         Console.WriteLine($"{item.Code} {item.Name.PadLeft((item.Name.Length + 17))}         SOLD OUT {item.Price.ToString().PadLeft(12)}");
-
                     }
                     else
                     {
                         Console.WriteLine($"{item.Code} {item.Name.PadLeft((item.Name.Length + 17))} {item.Quantity.ToString().PadLeft(25 - item.Name.Length)} {item.Price.ToString().PadLeft(12)}");
-                    }
-                    
+                    }                    
                     
                     Console.WriteLine();
                 }
@@ -246,7 +221,6 @@ namespace Capstone.Classes
                 Console.WriteLine();
             }
 
-
             Console.WriteLine($"Total: ${catering.TotalOrderCost}");
             Console.WriteLine();
             Console.Write("You received");
@@ -266,18 +240,7 @@ namespace Capstone.Classes
                 Console.WriteLine("Error completing purchase: " + ex.Message);
                 return;
             }
-
-
-
-
         }
-
-
-
-
-
-
-
     }
 }
 

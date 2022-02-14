@@ -49,16 +49,8 @@ namespace Capstone.Classes
                 }
             }
             
-
             List<CateringItem> sortedList = cateringItems.OrderBy(cateringItems => cateringItems.Code).ToList();
-            return sortedList;
-
-
-            
-
-        }
-
-
-        // This class should contain any and all details of access to files
+            return sortedList;           
+        }        
     }
 }

@@ -21,13 +21,7 @@ namespace Capstone.Classes
 
         public int Quantity { get;  set; } = 25;
         public string Code { get; set; }
-
         public string Type { get; set; }
         public int AmountInCart { get; set; } = 0;
-
-        
-
-        // This class should contain the definition for one catering item
-
     }
 }

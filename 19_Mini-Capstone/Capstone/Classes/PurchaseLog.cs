@@ -9,8 +9,6 @@ namespace Capstone.Classes
     {
         public void AddToLog(string logAction, decimal transactionAmount, decimal accountBalance)
         {
-
-
             string logDirectory = @"C:\Catering";
             string logFile = "Log.txt";
             string logFullPath = Path.Combine(logDirectory, logFile);
@@ -19,7 +17,6 @@ namespace Capstone.Classes
             {
                 sw.WriteLine($"{DateTime.Now} {logAction} ${transactionAmount} ${accountBalance}");
             }
-
         }
     }
 }

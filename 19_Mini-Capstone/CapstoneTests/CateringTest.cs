@@ -9,13 +9,9 @@ namespace CapstoneTests
     {
         [TestMethod]
         public void Check_that_catering_object_is_created()
-        {
-            // Arrange 
+        {            
             Catering catering = new Catering();
-
-            // Act
-
-            //Assert
+            
             Assert.IsNotNull(catering);
         }
 
@@ -35,14 +31,12 @@ namespace CapstoneTests
         {
             Catering testObject = new Catering();
 
-
             testObject.accountBalance = 50.00M;
             testObject.SelectProduct("D5", 5);
 
             decimal result = testObject.accountBalance;
 
-            Assert.AreEqual(37.50M, result);
-            
+            Assert.AreEqual(37.50M, result);            
         }
 
         [TestMethod]
@@ -59,7 +53,6 @@ namespace CapstoneTests
                 if (item.Code == "D5")
                 {
                     referenceItem = item;
-
                 }
             }
 
@@ -78,8 +71,7 @@ namespace CapstoneTests
             {
                 if (item.Code == "D5")
                 {
-                    referenceItem = item;
-                    
+                    referenceItem = item;                    
                 }
             }
 

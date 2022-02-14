@@ -8,7 +8,7 @@ namespace Capstone.Classes
     {
         // This class should contain all the "work" for catering
         public decimal accountBalance { get; set; } = 0.00M;
-        public List<CateringItem> ShoppingCart { get; set; } = new List<CateringItem>();
+        public List<CateringItem> ShoppingCart { get; private set; } = new List<CateringItem>();
         public decimal TotalOrderCost { get; set; }
         public Dictionary<string, int> BillTypes { get; set; } = new Dictionary<string, int>();
         public List<CateringItem> items { get; set; } = new List<CateringItem>();
@@ -19,49 +19,26 @@ namespace Capstone.Classes
         public Catering()
         {
             items = data.GetCateringItems();
-            
+
         }
-
-        
-
-        
-
-        
-
         public decimal AddMoney(decimal moneyToAdd)
         {
             accountBalance += moneyToAdd;
             purchaseLog.AddToLog("ADD MONEY: ", moneyToAdd, accountBalance);
-            return accountBalance;          
+            return accountBalance;
         }
 
         public List<CateringItem> SelectProduct(string codeChoice, int quantityChoice)
         {
-
             CateringItem selecteditem = new CateringItem();
-
-
-            
-
-
 
             foreach (CateringItem item in items)
             {
                 if (codeChoice == item.Code)
                 {
-                    
                     selecteditem = item;
-                    
                 }
-                
             }
-
-            
-
-            
-            
-
-            
 
             if (selecteditem.Price * quantityChoice <= accountBalance)
             {
@@ -69,43 +46,29 @@ namespace Capstone.Classes
                 ShoppingCart.Add(selecteditem);
                 accountBalance -= selecteditem.Price * quantityChoice;
                 purchaseLog.AddToLog($"{quantityChoice} {selecteditem.Name} {selecteditem.Code}", selecteditem.Price * quantityChoice, accountBalance);
+
                 foreach (CateringItem item in items)
                 {
                     if (selecteditem.Name == item.Name)
                     {
                         item.Quantity -= quantityChoice;
-                        //if (item.Quantity == 0)
-                        //{
-                        //    item.Quantity.ToString("Sold Out");
-                        //    return items;
-                        //}
-
-
                     }
-
                 }
-
             }
 
-
             return ShoppingCart;
-
-
         }
 
         public void CompleteTransaction()
         {
             TotalOrderCost = 0.00M;
             foreach (CateringItem item in ShoppingCart)
-            {               
+            {
                 TotalOrderCost += (item.Price * item.AmountInCart);
             }
 
-            
             decimal changedue = accountBalance;
 
-
-            
             BillTypes["Fifties"] = 0;
             BillTypes["Twenties"] = 0;
             BillTypes["Tens"] = 0;
@@ -165,13 +128,9 @@ namespace Capstone.Classes
                     accountBalance -= 0.05M;
                     continue;
                 }
-               
             }
+
             purchaseLog.AddToLog("GIVE CHANGE:", changedue, accountBalance);
-            
-
         }
-
-
-}
+    }
 }
